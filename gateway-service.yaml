@@ -1,0 +1,19 @@
+server:
+  port: 8080  # puerto del Gateway
+
+spring:
+   gateway:
+     # Rutas declarativas (ejemplo para customer-service)
+     routes:
+       - id: customer-service
+         uri: lb://customer-service
+         predicates:
+           - Path=/customer/**         # lo que entra al gateway
+         filters:
+           - StripPrefix=1
+
+     # Opcional: auto-descubrimiento de rutas via Eureka
+     discovery:
+       locator:
+         enabled: true
+         lower-case-service-id: true   # para usar nombres en minúsculas
