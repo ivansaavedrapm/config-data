@@ -1,22 +1,24 @@
 server:
- port: 8080   # puerto del gateway
+  port: 8080
+
 spring:
- cloud:
-   gateway:
-     mvc:                     
-       routes:
-         # === CUSTOMER-SERVICE vía Eureka ===
-         - id: customer-service
-           uri: lb://customer-service       # nombre lógico del microservicio en Eureka
-           predicates:
-             - Path=/customer-service/**           
-           filters:
-             - StripPrefix=1               
+  cloud:
+    gateway:
+      server:
+        webmvc:
+          routes:
+            - id: customer-service
+              uri: lb://customer-service
+              predicates:
+                - Path=/customer-service/**
+              filters:
+                - StripPrefix=1
+
 eureka:
- client:
-   register-with-eureka: true
-   fetch-registry: true
-   service-url:
-     defaultZone: http://localhost:8761/eureka
- instance:
-   prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
